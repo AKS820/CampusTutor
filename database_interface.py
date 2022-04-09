@@ -123,13 +123,7 @@ def add_user(name, uuid, school, email, password, role, classes):
 def create_table():
     conn = returnConn()
     with conn.cursor() as cur:
-        cur.execute(
-<<<<<<< Updated upstream
-            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep INT, classes TEXT)"
-=======
-            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, classes TEXT, scores TEXT, exp INT)"
->>>>>>> Stashed changes
-        )
+        cur.execute("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, classes TEXT, scores TEXT, exp INT)")
     conn.commit()
     conn.close()
 
@@ -153,9 +147,16 @@ def returnConn():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     return conn
 
+
+def updateConnTutors(name, uuid, school, email, rep, classes, score = 0, stars = 0.0):
+    conn = returnConn()
+    with conn.cursor() as cur:
+        command = "UPSERT INTO tutors (id, name, school, email, password, rep, classes, points, stars) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + rep + "', '" + classes + "', " + score + ", " + stars + "')"
+        cur.execute(command)
+    conn.commit()
+    conn.close()
+
 def isIDAvalible(idm):
-<<<<<<< Updated upstream
-=======
     conn = returnConn()
     with conn.cursor() as cur:
         cmd = "SELECT * FROM users WHERE id = "+str(idm)
@@ -192,7 +193,6 @@ def createReview(form_data):
     conn.close()
 
 def getExp(name):
->>>>>>> Stashed changes
     conn = returnConn()
     with conn.cursor() as cur:
         cmd = "SELECT exp FROM users WHERE name = '"+name+"'"
