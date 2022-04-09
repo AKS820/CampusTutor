@@ -124,7 +124,7 @@ def create_table():
     conn = returnConn()
     with conn.cursor() as cur:
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS tutors (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, classes TEXT, points INT, experience INT,)"
+            "CREATE TABLE IF NOT EXISTS tutors (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, classes TEXT, points INT, experience INT)"
         )
     conn.commit()
     conn.close()
@@ -208,7 +208,7 @@ def main():
     add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
     print(pull_names())
     '''
-    #print(pull_names())
+    print(pull_names())
     conn.close()
 
 
