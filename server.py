@@ -6,7 +6,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, request
 
-from database_interface import pull_names, createUser, create_table, getTutors
+from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview
 from flask import jsonify
 
 from twilio.rest import Client
@@ -47,6 +47,10 @@ def home():
         if(user):
             role = json.loads(user).get("role")
             if(role=="Student"):
+                tutors = newperson(getTutors())
+                newtutors = []
+                for tutor in tutors:
+                    newtutors.append(json.loads(tutor))
                 school = json.loads(user).get("school")
                 classes = json.loads(user).get("classes")
                 return render_template(
@@ -55,17 +59,25 @@ def home():
                     school = school,
                     role = role,
                     classes = classes,
+                    tutors = newtutors,
                     pretty=json.dumps(session.get("user"), indent=4),
                 )
             else:
                 school = json.loads(user).get("school")
-                classes = json.loads(user).get("classes")
+                scores = json.loads(user).get("scores")
+                exp = json.loads(user).get("exp")
+                totalScore = 0
+                for score in scores:
+                    totalScore += int(score)
+                rating = totalScore/exp
                 return render_template(
                     "homeTutor.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
-                    classes = classes,
+                    scores = scores,
+                    exp = exp,
+                    rating = rating,
                     pretty=json.dumps(session.get("user"), indent=4),
                 )
         else:
@@ -89,8 +101,9 @@ def newperson(pull_names_list = pull_names()):
         email = item[3]
         password = item[4]
         role = item[5]
-        rep = item[6]
-        classes = list(item[7].split('-'))
+        classes = list(item[6].split('-'))
+        scores = list(item[7].split('-'))
+        exp = item[8]
 
         value = {
            "name": name,
@@ -99,8 +112,9 @@ def newperson(pull_names_list = pull_names()):
            "email": email,
            "password": password,
            "role": role,
-           "rep": rep,
-           "classes": classes
+           "classes": classes,
+           "scores": scores,
+           "exp": exp
         }
 
         json_items.append(json.dumps(value))
@@ -115,13 +129,22 @@ def data():
         createUser(form_data)
         return redirect("/logout")
         
+@app.route("/review", methods = ['POST', 'GET'])
+def reviewTutor():
+    if request.method == 'GET':
+        return f"The URL /data is accessed directly. Try going to '/form' to submit form"
+    if request.method == 'POST':
+        form_data = request.form
+        createReview(form_data)
+        return redirect("/")
+        
 @app.route("/getTutors", methods = ['POST', 'GET'])
 def tutorData():
     if request.method == 'GET':
         return f"The URL /data is accessed directly. Try going to '/form' to submit form"
     if request.method == 'POST':
         form_data = request.form
-        tutors = newperson(getTutors(form_data))
+        tutors = newperson(getTutorsWithForm(form_data))
         newtutors = []
         for tutor in tutors:
             newtutors.append(json.loads(tutor))
@@ -176,7 +199,7 @@ def incoming_sms():
     name = session.get("user").get("userinfo").get("name")
     school = session.get("user").get("userinfo").get("school")
     classes = session.get("user").get("userinfo").get("classes")
-    rep = session.get("user").get("userinfo").get("rep")
+    #rep = session.get("user").get("userinfo").get("rep")
 
     if body.lower() == 'yes':
         resp.message("{} is a student at {} and is in these classes: {}. This is their description: {}. Check them out on our website for more information".format(name,school,*classes, rep))

@@ -112,10 +112,10 @@ def test_retry_loop(conn):
     logging.debug("test_retry_loop(): status message: %s", cur.statusmessage)
 '''
 
-def add_user(name, uuid, school, email, password, role, rep, classes):
+def add_user(name, uuid, school, email, password, role, classes):
     conn = returnConn()
     with conn.cursor() as cur:
-        command = "UPSERT INTO users (id, name, school, email, password, role, rep, classes) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + rep + "', '" + classes + "')"
+        command = "UPSERT INTO users (id, name, school, email, password, role, classes, scores, exp) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + classes + "', '"+ str(0) + "', '"+ str(0) +"')"
         cur.execute(command)
     conn.commit()
     conn.close()
@@ -123,9 +123,7 @@ def add_user(name, uuid, school, email, password, role, rep, classes):
 def create_table():
     conn = returnConn()
     with conn.cursor() as cur:
-        cur.execute(
-            "CREATE TABLE IF NOT EXISTS tutors (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, classes TEXT, points INT, experience INT)"
-        )
+        cur.execute("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, classes TEXT, scores TEXT, exp INT)")
     conn.commit()
     conn.close()
 
@@ -168,11 +166,66 @@ def isIDAvalible(idm):
         conn.close()
         return not output
 
-def getTutors(form_data):
+def getTutorsWithForm(form_data):
     classs = form_data.getlist("class")[0]
     conn = returnConn()
     with conn.cursor() as cur:
         cmd = "SELECT * FROM users WHERE role = 'Tutor' AND classes LIKE '%" + classs + "%'"
+        cur.execute(cmd)
+        rows = cur.fetchall()
+        conn.commit()
+        items = []
+        for row in rows:
+            items.append(row)
+        conn.close()
+        return items
+
+def createReview(form_data):
+    rating = form_data.getlist("rating")[0]
+    name = form_data.getlist("tutor")[0]
+    scores = getScores(name)+"-"+str(rating)
+    exp = int(getExp(name)) + 5
+    conn = returnConn()
+    with conn.cursor() as cur:
+        command = "UPDATE users set scores='"+scores+"', exp='"+str(exp)+"' WHERE name='"+name+"';"
+        cur.execute(command)
+    conn.commit()
+    conn.close()
+
+def getExp(name):
+    conn = returnConn()
+    with conn.cursor() as cur:
+        cmd = "SELECT exp FROM users WHERE name = '"+name+"'"
+        cur.execute(cmd)
+        scores = cur.fetchall()
+        conn.commit()
+        conn.close()
+        items = []
+        value = {
+            "scores": scores
+        }
+        items.append(json.dumps(value))
+        return json.loads(items[0]).get("scores")[0][0]
+
+def getScores(name):
+    conn = returnConn()
+    with conn.cursor() as cur:
+        cmd = "SELECT scores FROM users WHERE name = '"+name+"'"
+        cur.execute(cmd)
+        scores = cur.fetchall()
+        conn.commit()
+        conn.close()
+        items = []
+        value = {
+            "scores": scores
+        }
+        items.append(json.dumps(value))
+        return json.loads(items[0]).get("scores")[0][0]
+
+def getTutors():
+    conn = returnConn()
+    with conn.cursor() as cur:
+        cmd = "SELECT * FROM users WHERE role = 'Tutor'"
         cur.execute(cmd)
         rows = cur.fetchall()
         conn.commit()
@@ -192,7 +245,7 @@ def createUser(form_data):
     while(not isIDAvalible(str(uuid))):
         uuid += 1
     uuid = str(uuid)
-    add_user(name, uuid, school, email, "password", role, "0", classes)
+    add_user(name, uuid, school, email, "password", role, classes)
     
 def testDB():
     conn = returnConn()
