@@ -127,7 +127,7 @@ def create_table(conn):
 
 def pull_names(conn):
     with conn.cursor() as cur:
-        cur.execute("SELECT id, * FROM users")
+        cur.execute("SELECT * FROM users")
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
         rows = cur.fetchall()
         #print(rows)
