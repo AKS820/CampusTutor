@@ -1,22 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 import json
 from database_interface import pull_names, returnConn
-from flask import jsonify
 
 app = Flask(__name__)
 
-# @app.route('/s')
-# def home():
-#     return render_template('home.html')
-
 @app.route('/')
-def summary():
-    lists = newperson()
-    return lists[0]
+def general():
+    return render_template('home.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 def newperson(pull_names_list = pull_names()):
 
-    json_items = []
+    items = []
     for item in pull_names_list:
         uuid = item[0]
         name = item[1]
@@ -28,18 +26,24 @@ def newperson(pull_names_list = pull_names()):
         classes = list(item[7].split('-'))
 
         value = {
-           "name": name,
-           "uuid": uuid,
-           "school": school,
-           "email": email,
-           "password": password,
-           "role": role,
-           "rep": rep,
-           "classes": classes
+           "name": str(name),
+           "uuid": str(uuid),
+           "school": str(school),
+           "email": str(email),
+           "password": str(password),
+           "role": str(role),
+           "rep": str(rep),
+           "classes": str(classes)
         }
 
-        json_items.append(json.dumps(value))
-    return json_items
+        items.append(value)
+    return items
+
+
+
+@app.route('/findtutors')
+def finder():
+    return render_template('finder.html', posts = newperson())
 
 if __name__ == '__main__':
     app.run()
