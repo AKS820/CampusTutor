@@ -1,6 +1,3 @@
-"""Python Flask WebApp Auth0 integration example
-"""
-
 import json
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
@@ -9,7 +6,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, request
 
-from database_interface import pull_names, createUser
+from database_interface import pull_names, createUser, create_table, getTutors
 from flask import jsonify
 
 from twilio.rest import Client
@@ -41,18 +38,22 @@ auth_token = "59efb831f503f55c554d8e59fb5b3427"
 client = Client(account_sid, auth_token)
 
 
-# Controllers API
 @app.route("/")
 def home():
+    create_table()
     if(session):
         email = session.get("user").get("userinfo").get("email")
         user = getUserData(newperson(), email)
         if(user):
             school = json.loads(user).get("school")
+            role = json.loads(user).get("role")
+            classes = json.loads(user).get("classes")
             return render_template(
                 "home.html",
                 session=session.get("user"),
                 school = school,
+                role = role,
+                classes = classes,
                 pretty=json.dumps(session.get("user"), indent=4),
             )
         else:
@@ -101,6 +102,18 @@ def data():
         form_data = request.form
         createUser(form_data)
         return redirect("/logout")
+        
+@app.route("/getTutors", methods = ['POST', 'GET'])
+def tutorData():
+    if request.method == 'GET':
+        return f"The URL /data is accessed directly. Try going to '/form' to submit form"
+    if request.method == 'POST':
+        form_data = request.form
+        tutors = newperson(getTutors(form_data))
+        newtutors = []
+        for tutor in tutors:
+            newtutors.append(json.loads(tutor))
+        return render_template("TutorSelector.html", tutors = newtutors)
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():

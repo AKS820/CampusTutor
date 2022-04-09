@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Auth0 Example</title>
+  </head>
+  <body>
+    <h1>Tutors</h1>
+    <p><a href="/logout" id="qsLogoutBtn">Logout</a></p>
+	<p><a href="/" id="qsLogoutBtn">Home</a></p>
+	<div><pre>
+	<form action="/request">
+  <label for="tutors">Choose a tutor:</label>
+  <select id="tutors" name="tutors">
+  	{% for tutor in tutors %}
+<option value={{tutor.get("name")}}>{{tutor.get("name")}} with rep: {{tutor.get("rep")}}</option>
+{% endfor %}
+  </select>
+  <input type="submit" value="Request!">
+</form>
+
+</pre></div>
+  </body>
+</html>

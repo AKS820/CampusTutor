@@ -118,6 +118,7 @@ def add_user(name, uuid, school, email, password, role, rep, classes):
         command = "UPSERT INTO users (id, name, school, email, password, role, rep, classes) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + rep + "', '" + classes + "')"
         cur.execute(command)
     conn.commit()
+    conn.close()
 
 def create_table():
     conn = returnConn()
@@ -126,6 +127,7 @@ def create_table():
             "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep INT, classes TEXT)"
         )
     conn.commit()
+    conn.close()
 
 def pull_names():
     conn = returnConn()
@@ -156,12 +158,26 @@ def isIDAvalible(idm):
         conn.commit()
         conn.close()
         return not output
-        
+
+def getTutors(form_data):
+    classs = form_data.getlist("class")[0]
+    conn = returnConn()
+    with conn.cursor() as cur:
+        cmd = "SELECT * FROM users WHERE role = 'Tutor' AND classes LIKE '%" + classs + "%'"
+        cur.execute(cmd)
+        rows = cur.fetchall()
+        conn.commit()
+        items = []
+        for row in rows:
+            items.append(row)
+        conn.close()
+        return items
+
 def createUser(form_data):
     school = form_data.getlist("school")[0]
     name = form_data.getlist("name")[0]
     role = form_data.getlist("role")[0]
-    classes = form_data.getlist("classes")[0]
+    classes = form_data.getlist("classes")[0].replace(" ","")
     email = form_data.getlist("email")[0]
     uuid = 0
     while(not isIDAvalible(str(uuid))):
@@ -176,13 +192,14 @@ def testDB():
 
 def main():
     conn = returnConn()
+    #print(getTutors("CSE232"))
+    #create_table()
     '''
-    create_table()
     add_user("keshav", "0", "MSU", "keshavjbabu@gmail.com", "password", "student", "0", "CSE232-MTH235")
     add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
     print(pull_names())
     '''
-    print(pull_names())
+    #print(pull_names())
     conn.close()
 
 
