@@ -45,17 +45,29 @@ def home():
         email = session.get("user").get("userinfo").get("email")
         user = getUserData(newperson(), email)
         if(user):
-            school = json.loads(user).get("school")
             role = json.loads(user).get("role")
-            classes = json.loads(user).get("classes")
-            return render_template(
-                "home.html",
-                session=session.get("user"),
-                school = school,
-                role = role,
-                classes = classes,
-                pretty=json.dumps(session.get("user"), indent=4),
-            )
+            if(role=="Student"):
+                school = json.loads(user).get("school")
+                classes = json.loads(user).get("classes")
+                return render_template(
+                    "homeStudent.html",
+                    session=session.get("user"),
+                    school = school,
+                    role = role,
+                    classes = classes,
+                    pretty=json.dumps(session.get("user"), indent=4),
+                )
+            else:
+                school = json.loads(user).get("school")
+                classes = json.loads(user).get("classes")
+                return render_template(
+                    "homeTutor.html",
+                    session=session.get("user"),
+                    school = school,
+                    role = role,
+                    classes = classes,
+                    pretty=json.dumps(session.get("user"), indent=4),
+                )
         else:
             return render_template("signup.html", email=email)
     else:

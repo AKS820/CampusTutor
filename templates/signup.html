@@ -4,13 +4,232 @@
     <title>Auth0 Example</title>
   </head>
   <body>
+  <script>
+	function addclass(){
+		var cc = document.getElementById("CC").value;
+		var cn = document.getElementById("CN").value;
+		console.log(cc);
+		console.log(cn)
+		if(document.getElementById("CR").value == ""){
+			document.getElementById("CR").value += cc+cn;
+		}else{
+			document.getElementById("CR").value += "-"+cc+cn;
+		}
+		
+	}
+  </script>
     <h1 id="profileDropDown">Welcome New User</h1>
 	<form action="/createUser" method = "POST">
-	<p>Email <input type = "text" name = "email" value="{{email}}" readonly></p>
-    <p>School <input type = "text" name = "school" /></p>
-    <p>Name <input type = "text" name = "name" /></p>
-	<p>Role <input type = "text" name = "role" /></p>
-	<p>Classes <input type = "text" name = "classes" /></p>
+	<p>Email: <input type = "text" name = "email" value="{{email}}" readonly></p>
+    <p>School: <input type = "text" name = "school" /></p>
+    <p>Name: <input type = "text" name = "name" /></p>
+	<p>Role: 
+		<select name="role">
+			<option value="Student">Student</option>
+			<option value="Tutor">Tutor</option>
+		</select>
+	</p>
+	<p>Classes: <input type = "text" name = "classes" id="CR"readonly></p>
+	<p>Classes Code:
+		<select name="classCode" id="CC">
+		<option value="-1">(select)</option>
+		<option value="AAAS">AAAS&#160;&#160;&#160;&#160;African American and African Studies</option>
+		<option value="AAE">AAE&#160;&#160;&#160;&#160;&#160;&#160;Advanced Academic English</option>
+		<option value="ABM">ABM&#160;&#160;&#160;&#160;&#160;&#160;Agribusiness Management</option>
+		<option value="ACC">ACC&#160;&#160;&#160;&#160;&#160;&#160;Accounting</option>
+		<option value="ACM">ACM&#160;&#160;&#160;&#160;&#160;&#160;Arts and Cultural Management</option>
+		<option value="ADV">ADV&#160;&#160;&#160;&#160;&#160;&#160;Advertising</option>
+		<option value="AE">AE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Agricultural Engineering</option>
+		<option value="AESC">AESC&#160;&#160;&#160;&#160;Applied Engineering Sciences</option>
+		<option value="AFR">AFR&#160;&#160;&#160;&#160;&#160;&#160;African Languages</option>
+		<option value="AFRE">AFRE&#160;&#160;&#160;&#160;Agricultural, Food, and Resource Economics</option>
+		<option value="AIIS">AIIS&#160;&#160;&#160;&#160;American Indian and Indigenous Studies</option>
+		<option value="AL">AL&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Arts and Letters</option>
+		<option value="AMS">AMS&#160;&#160;&#160;&#160;&#160;&#160;American Studies</option>
+		<option value="ANP">ANP&#160;&#160;&#160;&#160;&#160;&#160;Anthropology</option>
+		<option value="ANR">ANR&#160;&#160;&#160;&#160;&#160;&#160;Agriculture and Natural Resources</option>
+		<option value="ANS">ANS&#160;&#160;&#160;&#160;&#160;&#160;Animal Science</option>
+		<option value="ANTR">ANTR&#160;&#160;&#160;&#160;Human Anatomy</option>
+		<option value="ARB">ARB&#160;&#160;&#160;&#160;&#160;&#160;Arabic</option>
+		<option value="AS">AS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Aerospace Studies</option>
+		<option value="ASN">ASN&#160;&#160;&#160;&#160;&#160;&#160;Asian Languages</option>
+		<option value="AST">AST&#160;&#160;&#160;&#160;&#160;&#160;Astronomy and Astrophysics</option>
+		<option value="AT">AT&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Agricultural Technology</option>
+		<option value="ATD">ATD&#160;&#160;&#160;&#160;&#160;&#160;Apparel and Textile Design</option>
+		<option value="ATM">ATM&#160;&#160;&#160;&#160;&#160;&#160;Agricultural Technology and Systems Management</option>
+		<option value="BE">BE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Biosystems Engineering</option>
+		<option value="BLD">BLD&#160;&#160;&#160;&#160;&#160;&#160;Biomedical Laboratory Diagnostics</option>
+		<option value="BMB">BMB&#160;&#160;&#160;&#160;&#160;&#160;Biochemistry and Molecular Biology</option>
+		<option value="BME">BME&#160;&#160;&#160;&#160;&#160;&#160;Biomedical Engineering</option>
+		<option value="BMS">BMS&#160;&#160;&#160;&#160;&#160;&#160;BioMolecular Science</option>
+		<option value="BS">BS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Biological Science</option>
+		<option value="BUS">BUS&#160;&#160;&#160;&#160;&#160;&#160;Business</option>
+		<option value="CAS">CAS&#160;&#160;&#160;&#160;&#160;&#160;Communication Arts and Sciences</option>
+		<option value="CE">CE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Civil Engineering</option>
+		<option value="CEM">CEM&#160;&#160;&#160;&#160;&#160;&#160;Chemistry</option>
+		<option value="CEP">CEP&#160;&#160;&#160;&#160;&#160;&#160;Counseling, Educational Psy &amp; Special Education</option>
+		<option value="CHE">CHE&#160;&#160;&#160;&#160;&#160;&#160;Chemical Engineering</option>
+		<option value="CHS">CHS&#160;&#160;&#160;&#160;&#160;&#160;Chinese</option>
+		<option value="CJ">CJ&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Criminal Justice</option>
+		<option value="CLA">CLA&#160;&#160;&#160;&#160;&#160;&#160;Classical Studies</option>
+		<option value="CLS">CLS&#160;&#160;&#160;&#160;&#160;&#160;Chicano/Latino Studies</option>
+		<option value="CMB">CMB&#160;&#160;&#160;&#160;&#160;&#160;Cell and Molecular Biology</option>
+		<option value="CMBA">CMBA&#160;&#160;&#160;&#160;Corporate MBA Program</option>
+		<option value="CMP">CMP&#160;&#160;&#160;&#160;&#160;&#160;Construction Management Program</option>
+		<option value="CMSE">CMSE&#160;&#160;&#160;&#160;Computational Mathematics, Science, &amp; Engineering</option>
+		<option value="COM">COM&#160;&#160;&#160;&#160;&#160;&#160;Communication</option>
+		<option value="CSD">CSD&#160;&#160;&#160;&#160;&#160;&#160;Communicative Sciences and Disorders</option>
+		<option value="CSE">CSE&#160;&#160;&#160;&#160;&#160;&#160;Computer Science and Engineering</option>
+		<option value="CSS">CSS&#160;&#160;&#160;&#160;&#160;&#160;Crop and Soil Sciences</option>
+		<option value="CSUS">CSUS&#160;&#160;&#160;&#160;Community Sustainability</option>
+		<option value="DAN">DAN&#160;&#160;&#160;&#160;&#160;&#160;Dance</option>
+		<option value="DH">DH&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Digital Humanities</option>
+		<option value="DS">DS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Digital Storytelling</option>
+		<option value="EAD">EAD&#160;&#160;&#160;&#160;&#160;&#160;Educational Administration</option>
+		<option value="EC">EC&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Economics</option>
+		<option value="ECE">ECE&#160;&#160;&#160;&#160;&#160;&#160;Electrical and Computer Engineering</option>
+		<option value="ED">ED&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Education</option>
+		<option value="EEM">EEM&#160;&#160;&#160;&#160;&#160;&#160;Environmental Economics and Management</option>
+		<option value="EGR">EGR&#160;&#160;&#160;&#160;&#160;&#160;Engineering</option>
+		<option value="EM">EM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Emergency Medicine</option>
+		<option value="EMB">EMB&#160;&#160;&#160;&#160;&#160;&#160;Executive MBA Program</option>
+		<option value="ENE">ENE&#160;&#160;&#160;&#160;&#160;&#160;Environmental Engineering</option>
+		<option value="ENG">ENG&#160;&#160;&#160;&#160;&#160;&#160;English</option>
+		<option value="ENT">ENT&#160;&#160;&#160;&#160;&#160;&#160;Entomology</option>
+		<option value="EPI">EPI&#160;&#160;&#160;&#160;&#160;&#160;Epidemiology</option>
+		<option value="ES">ES&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Earth Science</option>
+		<option value="ESHP">ESHP&#160;&#160;&#160;&#160;Entrepreneurship</option>
+		<option value="ESL">ESL&#160;&#160;&#160;&#160;&#160;&#160;English As A Second Language</option>
+		<option value="ESP">ESP&#160;&#160;&#160;&#160;&#160;&#160;Environmental Science and Policy</option>
+		<option value="FCM">FCM&#160;&#160;&#160;&#160;&#160;&#160;Family and Community Medicine</option>
+		<option value="FI">FI&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Finance</option>
+		<option value="FIM">FIM&#160;&#160;&#160;&#160;&#160;&#160;Food Industry Management</option>
+		<option value="FLM">FLM&#160;&#160;&#160;&#160;&#160;&#160;Film Studies</option>
+		<option value="FLT">FLT&#160;&#160;&#160;&#160;&#160;&#160;Foreign Language Teaching</option>
+		<option value="FM">FM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Family Medicine</option>
+		<option value="FOR">FOR&#160;&#160;&#160;&#160;&#160;&#160;Forestry</option>
+		<option value="FRN">FRN&#160;&#160;&#160;&#160;&#160;&#160;French</option>
+		<option value="FRS">FRS&#160;&#160;&#160;&#160;&#160;&#160;Forensic Science</option>
+		<option value="FSC">FSC&#160;&#160;&#160;&#160;&#160;&#160;Food Science</option>
+		<option value="FW">FW&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Fisheries and Wildlife</option>
+		<option value="GBL">GBL&#160;&#160;&#160;&#160;&#160;&#160;General Business and Business Law</option>
+		<option value="GD">GD&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Graphic Design</option>
+		<option value="GEN">GEN&#160;&#160;&#160;&#160;&#160;&#160;Genetics</option>
+		<option value="GEO">GEO&#160;&#160;&#160;&#160;&#160;&#160;Geography</option>
+		<option value="GLG">GLG&#160;&#160;&#160;&#160;&#160;&#160;Geological Sciences</option>
+		<option value="GNL">GNL&#160;&#160;&#160;&#160;&#160;&#160;Global Non-Profit Leadership</option>
+		<option value="GRK">GRK&#160;&#160;&#160;&#160;&#160;&#160;Greek</option>
+		<option value="GRM">GRM&#160;&#160;&#160;&#160;&#160;&#160;German</option>
+		<option value="GSAH">GSAH&#160;&#160;&#160;&#160;Global Studies in the Arts and Humanities</option>
+		<option value="GUSP">GUSP&#160;&#160;&#160;&#160;Global Urban Studies Program</option>
+		<option value="HA">HA&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;History of Art</option>
+		<option value="HB">HB&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Hospitality Business</option>
+		<option value="HCM">HCM&#160;&#160;&#160;&#160;&#160;&#160;Healthcare Management</option>
+		<option value="HDFS">HDFS&#160;&#160;&#160;&#160;Human Development and Family Studies</option>
+		<option value="HEB">HEB&#160;&#160;&#160;&#160;&#160;&#160;Hebrew</option>
+		<option value="HED">HED&#160;&#160;&#160;&#160;&#160;&#160;Human Environment and Design</option>
+		<option value="HM">HM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Human Medicine</option>
+		<option value="HNF">HNF&#160;&#160;&#160;&#160;&#160;&#160;Human Nutrition and Foods</option>
+		<option value="HRLR">HRLR&#160;&#160;&#160;&#160;Human Resources and Labor Relations</option>
+		<option value="HRT">HRT&#160;&#160;&#160;&#160;&#160;&#160;Horticulture</option>
+		<option value="HST">HST&#160;&#160;&#160;&#160;&#160;&#160;History</option>
+		<option value="IAH">IAH&#160;&#160;&#160;&#160;&#160;&#160;Integrative Studies in Arts and Humanities</option>
+		<option value="IBIO">IBIO&#160;&#160;&#160;&#160;Integrative Biology</option>
+		<option value="IDES">IDES&#160;&#160;&#160;&#160;Interior Design</option>
+		<option value="IM">IM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Internal Medicine</option>
+		<option value="ISA">ISA&#160;&#160;&#160;&#160;&#160;&#160;Indian and South Asian Languages</option>
+		<option value="ISB">ISB&#160;&#160;&#160;&#160;&#160;&#160;Integrative Studies in Biological Science</option>
+		<option value="ISE">ISE&#160;&#160;&#160;&#160;&#160;&#160;Integrated Science Education</option>
+		<option value="ISP">ISP&#160;&#160;&#160;&#160;&#160;&#160;Integrative Studies in Physical Science</option>
+		<option value="ISS">ISS&#160;&#160;&#160;&#160;&#160;&#160;Integrative Studies Soc, Behavioral &amp; Ec Sciences</option>
+		<option value="ITL">ITL&#160;&#160;&#160;&#160;&#160;&#160;Italian</option>
+		<option value="ITM">ITM&#160;&#160;&#160;&#160;&#160;&#160;Information Technology Management</option>
+		<option value="JPN">JPN&#160;&#160;&#160;&#160;&#160;&#160;Japanese</option>
+		<option value="JRN">JRN&#160;&#160;&#160;&#160;&#160;&#160;Journalism</option>
+		<option value="JS">JS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Jewish Studies</option>
+		<option value="KIN">KIN&#160;&#160;&#160;&#160;&#160;&#160;Kinesiology</option>
+		<option value="KOR">KOR&#160;&#160;&#160;&#160;&#160;&#160;Korean</option>
+		<option value="LA">LA&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Landscape Architecture</option>
+		<option value="LAW">LAW&#160;&#160;&#160;&#160;&#160;&#160;MSU College of Law</option>
+		<option value="LB">LB&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lyman Briggs</option>
+		<option value="LCS">LCS&#160;&#160;&#160;&#160;&#160;&#160;Large Animal Clinical Sciences</option>
+		<option value="LIN">LIN&#160;&#160;&#160;&#160;&#160;&#160;Linguistics</option>
+		<option value="LL">LL&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linguistics and Languages</option>
+		<option value="LLT">LLT&#160;&#160;&#160;&#160;&#160;&#160;Language, Learning and Teaching</option>
+		<option value="LTN">LTN&#160;&#160;&#160;&#160;&#160;&#160;Latin</option>
+		<option value="LWG">LWG&#160;&#160;&#160;&#160;&#160;&#160;Law Graduate Students</option>
+		<option value="MBA">MBA&#160;&#160;&#160;&#160;&#160;&#160;Master of Business Administration</option>
+		<option value="MC">MC&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;James Madison College</option>
+		<option value="ME">ME&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Mechanical Engineering</option>
+		<option value="MED">MED&#160;&#160;&#160;&#160;&#160;&#160;Medicine</option>
+		<option value="MGT">MGT&#160;&#160;&#160;&#160;&#160;&#160;Management</option>
+		<option value="MI">MI&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Media and Information</option>
+		<option value="MKT">MKT&#160;&#160;&#160;&#160;&#160;&#160;Marketing</option>
+		<option value="MMG">MMG&#160;&#160;&#160;&#160;&#160;&#160;Microbiology and Molecular Genetics</option>
+		<option value="MS">MS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Military Science</option>
+		<option value="MSE">MSE&#160;&#160;&#160;&#160;&#160;&#160;Materials Science and Engineering</option>
+		<option value="MTH">MTH&#160;&#160;&#160;&#160;&#160;&#160;Mathematics</option>
+		<option value="MTHE">MTHE&#160;&#160;&#160;&#160;Mathematics Education</option>
+		<option value="MUS">MUS&#160;&#160;&#160;&#160;&#160;&#160;Music</option>
+		<option value="MUSM">MUSM&#160;&#160;&#160;&#160;Museum Studies</option>
+		<option value="NEU">NEU&#160;&#160;&#160;&#160;&#160;&#160;Neuroscience</option>
+		<option value="NOP">NOP&#160;&#160;&#160;&#160;&#160;&#160;Neurology and Ophthalmology</option>
+		<option value="NSC">NSC&#160;&#160;&#160;&#160;&#160;&#160;Natural Science</option>
+		<option value="NUR">NUR&#160;&#160;&#160;&#160;&#160;&#160;Nursing</option>
+		<option value="OGR">OGR&#160;&#160;&#160;&#160;&#160;&#160;Obstetrics, Gynecology and Reproductive Biology</option>
+		<option value="OMM">OMM&#160;&#160;&#160;&#160;&#160;&#160;Osteopathic Manipulative Medicine</option>
+		<option value="OSS">OSS&#160;&#160;&#160;&#160;&#160;&#160;Osteopathic Surgical Specialties</option>
+		<option value="OST">OST&#160;&#160;&#160;&#160;&#160;&#160;Osteopathic Medicine</option>
+		<option value="PA">PA&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PA Medicine</option>
+		<option value="PDC">PDC&#160;&#160;&#160;&#160;&#160;&#160;Planning, Design and Construction</option>
+		<option value="PDI">PDI&#160;&#160;&#160;&#160;&#160;&#160;Pathobiology and Diagnostic Investigation</option>
+		<option value="PED">PED&#160;&#160;&#160;&#160;&#160;&#160;Pediatrics</option>
+		<option value="PHD">PHD&#160;&#160;&#160;&#160;&#160;&#160;Pediatrics and Human Development</option>
+		<option value="PHL">PHL&#160;&#160;&#160;&#160;&#160;&#160;Philosophy</option>
+		<option value="PHM">PHM&#160;&#160;&#160;&#160;&#160;&#160;Pharmacology and Toxicology</option>
+		<option value="PHY">PHY&#160;&#160;&#160;&#160;&#160;&#160;Physics</option>
+		<option value="PIM">PIM&#160;&#160;&#160;&#160;&#160;&#160;Integrative Management</option>
+		<option value="PKG">PKG&#160;&#160;&#160;&#160;&#160;&#160;Packaging</option>
+		<option value="PLB">PLB&#160;&#160;&#160;&#160;&#160;&#160;Plant Biology</option>
+		<option value="PLP">PLP&#160;&#160;&#160;&#160;&#160;&#160;Plant Pathology</option>
+		<option value="PLS">PLS&#160;&#160;&#160;&#160;&#160;&#160;Political Science</option>
+		<option value="PMR">PMR&#160;&#160;&#160;&#160;&#160;&#160;Physical Medicine and Rehabilitation</option>
+		<option value="PPL">PPL&#160;&#160;&#160;&#160;&#160;&#160;Public Policy</option>
+		<option value="PR">PR&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Public Relations</option>
+		<option value="PRT">PRT&#160;&#160;&#160;&#160;&#160;&#160;Portuguese</option>
+		<option value="PSC">PSC&#160;&#160;&#160;&#160;&#160;&#160;Psychiatry</option>
+		<option value="PSL">PSL&#160;&#160;&#160;&#160;&#160;&#160;Physiology</option>
+		<option value="PSY">PSY&#160;&#160;&#160;&#160;&#160;&#160;Psychology</option>
+		<option value="QB">QB&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Quantitative Biology</option>
+		<option value="RAD">RAD&#160;&#160;&#160;&#160;&#160;&#160;Radiology</option>
+		<option value="RCAH">RCAH&#160;&#160;&#160;&#160;Residential College in the Arts and Humanities</option>
+		<option value="REL">REL&#160;&#160;&#160;&#160;&#160;&#160;Religious Studies</option>
+		<option value="RET">RET&#160;&#160;&#160;&#160;&#160;&#160;Retailing</option>
+		<option value="ROM">ROM&#160;&#160;&#160;&#160;&#160;&#160;Romance Languages</option>
+		<option value="RUS">RUS&#160;&#160;&#160;&#160;&#160;&#160;Russian</option>
+		<option value="SCM">SCM&#160;&#160;&#160;&#160;&#160;&#160;Supply Chain Management</option>
+		<option value="SCS">SCS&#160;&#160;&#160;&#160;&#160;&#160;Small Animal Clinical Sciences</option>
+		<option value="SME">SME&#160;&#160;&#160;&#160;&#160;&#160;Science and Mathematics Education</option>
+		<option value="SOC">SOC&#160;&#160;&#160;&#160;&#160;&#160;Sociology</option>
+		<option value="SPN">SPN&#160;&#160;&#160;&#160;&#160;&#160;Spanish</option>
+		<option value="SSC">SSC&#160;&#160;&#160;&#160;&#160;&#160;Social Science</option>
+		<option value="STA">STA&#160;&#160;&#160;&#160;&#160;&#160;Studio Art</option>
+		<option value="STT">STT&#160;&#160;&#160;&#160;&#160;&#160;Statistics and Probability</option>
+		<option value="SUR">SUR&#160;&#160;&#160;&#160;&#160;&#160;Surgery</option>
+		<option value="SW">SW&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Social Work</option>
+		<option value="TE">TE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Teacher Education</option>
+		<option value="THR">THR&#160;&#160;&#160;&#160;&#160;&#160;Theatre</option>
+		<option value="TSM">TSM&#160;&#160;&#160;&#160;&#160;&#160;Technology Systems Management</option>
+		<option value="UGS">UGS&#160;&#160;&#160;&#160;&#160;&#160;Undergraduate Studies</option>
+		<option value="UP">UP&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Urban Planning</option>
+		<option value="VM">VM&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Veterinary Medicine</option>
+		<option value="WRA">WRA&#160;&#160;&#160;&#160;&#160;&#160;Writing, Rhetoric and American Cultures</option>
+		<option value="WS">WS&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Women&#39;s Studies</option>
+		<option value="XA">XA&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Experience Architecture</option>
+	</select>
+	</p>
+	<p>Course Number: <input type = "text" name = "classNum" id="CN"/></p>
+	<button type="button" onclick="addclass();">add class</button>
     <p><input type = "submit" value = "submit" /></p>
 </form>
   </body>
