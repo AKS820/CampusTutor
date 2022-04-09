@@ -7,19 +7,13 @@ import time
 import random
 import logging
 from argparse import ArgumentParser, RawTextHelpFormatter
+import uuid
 
 import psycopg2
 from psycopg2.errors import SerializationFailure
 
 
-def create_accounts(conn):
-    with conn.cursor() as cur:
-        cur.execute(
-            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep DOUBLE, classes LONGTEXT)"
-        )
-        #cur.execute("UPSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)")
-        logging.debug("create_accounts(): status message: %s", cur.statusmessage)
-    conn.commit()
+
 
 
 def delete_accounts(conn):
@@ -27,7 +21,7 @@ def delete_accounts(conn):
         cur.execute("DELETE FROM bank.accounts")
         logging.debug("delete_accounts(): status message: %s", cur.statusmessage)
     conn.commit()
-
+            
 
 def print_balances(conn):
     with conn.cursor() as cur:
@@ -114,35 +108,42 @@ def test_retry_loop(conn):
         cur.execute("SELECT crdb_internal.force_retry('1s'::INTERVAL)")
     logging.debug("test_retry_loop(): status message: %s", cur.statusmessage)
 
+def add_user(conn, name, uuid, school, email, password, role, rep, classes):
+    with conn.cursor() as cur:
+        command = "UPSERT INTO users (id, name, school, email, password, role, rep, classes) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + rep + "', '" + classes + "')"
+        cur.execute(command)
+    conn.commit()
 
+def create_table(conn):
+    with conn.cursor() as cur:
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep INT, classes TEXT)"
+        )
+    conn.commit()
+
+def pull_names(conn):
+    with conn.cursor() as cur:
+        cur.execute("SELECT id, name FROM users")
+        logging.debug("print_balances(): status message: %s", cur.statusmessage)
+        rows = cur.fetchall()
+        conn.commit()
+        #print(f"names at {time.asctime()}:")
+        names = []
+        for row in rows:
+            names.append(row[1])
+        return names
+
+"""
 def main():
-    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/bank?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
-    """
-    create_accounts(conn)
-    print_balances(conn)
-
-    amount = 100
-    fromId = 1
-    toId = 2
-
-    try:
-        run_transaction(conn, lambda conn: transfer_funds(conn, fromId, toId, amount))
-
-        # The function below is used to test the transaction retry logic.  It
-        # can be deleted from production code.
-        # run_transaction(conn, test_retry_loop)
-    except ValueError as ve:
-        # Below, we print the error and continue on so this example is easy to
-        # run (and run, and run...).  In real code you should handle this error
-        # and any others thrown by the database interaction.
-        logging.debug("run_transaction(conn, op) failed: %s", ve)
-        pass
-
-    print_balances(conn)
-    """
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
+    create_table(conn)
+    add_user(conn, "keshav", "0", "MSU", "babukesh@msu.edu", "password", "student", "0", "CSE232-MTH235")
+    add_user(conn, "bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
+    print(pull_names(conn))
     conn.close()
 
 
 
 if __name__ == "__main__":
     main()
+"""
