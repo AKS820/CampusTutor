@@ -124,7 +124,7 @@ def create_table():
     conn = returnConn()
     with conn.cursor() as cur:
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep INT, classes TEXT)"
+            "CREATE TABLE IF NOT EXISTS tutors (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, classes TEXT, points INT, experience INT,)"
         )
     conn.commit()
     conn.close()
@@ -148,6 +148,15 @@ def pull_names():
 def returnConn():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     return conn
+
+
+def updateConnTutors(name, uuid, school, email, rep, classes, score = 0, stars = 0.0):
+    conn = returnConn()
+    with conn.cursor() as cur:
+        command = "UPSERT INTO tutors (id, name, school, email, password, rep, classes, points, stars) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + rep + "', '" + classes + "', " + score + ", " + stars + "')"
+        cur.execute(command)
+    conn.commit()
+    conn.close()
 
 def isIDAvalible(idm):
     conn = returnConn()

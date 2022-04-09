@@ -172,6 +172,10 @@ def incoming_sms():
         resp.message("Request Ignored")
     return str(resp)
 
+@app.route("/sms")
+def review():
+    return render_template("review.html")
+
 
 
 if __name__ == "__main__":
