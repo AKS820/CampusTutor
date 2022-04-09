@@ -12,10 +12,11 @@ import uuid
 import psycopg2
 from psycopg2.errors import SerializationFailure
 
+import json
 
 
 
-
+'''
 def delete_accounts(conn):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM bank.accounts")
@@ -107,6 +108,7 @@ def test_retry_loop(conn):
         cur.execute("SELECT now()")
         cur.execute("SELECT crdb_internal.force_retry('1s'::INTERVAL)")
     logging.debug("test_retry_loop(): status message: %s", cur.statusmessage)
+'''
 
 def add_user(conn, name, uuid, school, email, password, role, rep, classes):
     with conn.cursor() as cur:
@@ -123,27 +125,31 @@ def create_table(conn):
 
 def pull_names(conn):
     with conn.cursor() as cur:
-        cur.execute("SELECT id, name FROM users")
+        cur.execute("SELECT id, * FROM users")
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
         rows = cur.fetchall()
+        #print(rows)
         conn.commit()
         #print(f"names at {time.asctime()}:")
-        names = []
+        items = []
         for row in rows:
-            names.append(row[1])
-        return names
+            items.append(row)
+            #print(row)
+        return items
 
-"""
+def returnConn():
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
+    return conn
+
+
 def main():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     create_table(conn)
     add_user(conn, "keshav", "0", "MSU", "babukesh@msu.edu", "password", "student", "0", "CSE232-MTH235")
     add_user(conn, "bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
-    print(pull_names(conn))
     conn.close()
 
 
 
 if __name__ == "__main__":
     main()
-"""
