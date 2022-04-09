@@ -12,6 +12,10 @@ from flask import Flask, redirect, render_template, session, url_for, request
 from database_interface import pull_names, createUser
 from flask import jsonify
 
+from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
+from twilio.twiml.messaging_response import MessagingResponse
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -31,6 +35,10 @@ oauth.register(
     },
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
 )
+
+account_sid = "ACd764836049147497da855308896f8322"
+auth_token = "59efb831f503f55c554d8e59fb5b3427"
+client = Client(account_sid, auth_token)
 
 
 # Controllers API
@@ -123,6 +131,34 @@ def logout():
             quote_via=quote_plus,
         )
     )
+
+@app.route("/sms")
+def sms():
+    name = session.get("user").get("userinfo").get("name")
+    phoneNumber = session.get("user").get("userinfo").get("number")
+
+    call = client.messages.create(
+        body="{} has expressed interest in you. Would you like to visit their profile? (YES/NO)".format(name),
+        #to = "{}".format(phoneNumber),
+        to = "+12485335849",
+        from_ = "+12182198066")
+    msg = incoming_sms()
+
+def incoming_sms():
+    body = request.values.get('Body',None)
+    resp = MessagingResponse()
+
+    name = session.get("user").get("userinfo").get("name")
+    school = session.get("user").get("userinfo").get("school")
+    classes = session.get("user").get("userinfo").get("classes")
+    rep = session.get("user").get("userinfo").get("rep")
+
+    if body.lower() == 'yes':
+        resp.message("{} is a student at {} and is in these classes: {}. This is their description: {}. Check them out on our website for more information".format(name,school,*classes, rep))
+    elif body.lower() == 'no':
+        resp.message("Request Ignored")
+    return str(resp)
+
 
 
 if __name__ == "__main__":
