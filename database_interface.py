@@ -140,18 +140,48 @@ def pull_names():
         for row in rows:
             items.append(row)
             #print(row)
+        conn.close()
         return items
 
 def returnConn():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     return conn
 
+def isIDAvalible(idm):
+    conn = returnConn()
+    with conn.cursor() as cur:
+        cmd = "SELECT * FROM users WHERE id = "+str(idm)
+        cur.execute(cmd)
+        output = cur.fetchall()
+        conn.commit()
+        conn.close()
+        return not output
+        
+def createUser(form_data):
+    school = form_data.getlist("school")[0]
+    name = form_data.getlist("name")[0]
+    role = form_data.getlist("role")[0]
+    classes = form_data.getlist("classes")[0]
+    email = form_data.getlist("email")[0]
+    uuid = 0
+    while(not isIDAvalible(str(uuid))):
+        uuid += 1
+    uuid = str(uuid)
+    add_user(name, uuid, school, email, "password", role, "0", classes)
+    
+def testDB():
+    conn = returnConn()
+    print(pull_names())
+    conn.close()
 
 def main():
-    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
+    conn = returnConn()
+    '''
     create_table()
-    add_user("keshav", "0", "MSU", "babukesh@msu.edu", "password", "student", "0", "CSE232-MTH235")
+    add_user("keshav", "0", "MSU", "keshavjbabu@gmail.com", "password", "student", "0", "CSE232-MTH235")
     add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
+    print(pull_names())
+    '''
     print(pull_names())
     conn.close()
 
