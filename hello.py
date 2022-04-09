@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import json
-from TutorApp.database_interface import pull_names, returnConn
+from database_interface import pull_names, returnConn
 from flask import jsonify
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def summary():
     lists = newperson()
     return lists[0]
 
-def newperson(pull_names_list = pull_names(returnConn())):
+def newperson(pull_names_list = pull_names()):
 
     json_items = []
     for item in pull_names_list:
