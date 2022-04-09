@@ -112,20 +112,23 @@ def test_retry_loop(conn):
     logging.debug("test_retry_loop(): status message: %s", cur.statusmessage)
 '''
 
-def add_user(conn, name, uuid, school, email, password, role, rep, classes):
+def add_user(name, uuid, school, email, password, role, rep, classes):
+    conn = returnConn()
     with conn.cursor() as cur:
         command = "UPSERT INTO users (id, name, school, email, password, role, rep, classes) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + rep + "', '" + classes + "')"
         cur.execute(command)
     conn.commit()
 
-def create_table(conn):
+def create_table():
+    conn = returnConn()
     with conn.cursor() as cur:
         cur.execute(
             "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, rep INT, classes TEXT)"
         )
     conn.commit()
 
-def pull_names(conn):
+def pull_names():
+    conn = returnConn()
     with conn.cursor() as cur:
         cur.execute("SELECT id, * FROM users")
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
@@ -146,9 +149,10 @@ def returnConn():
 
 def main():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
-    create_table(conn)
-    add_user(conn, "keshav", "0", "MSU", "babukesh@msu.edu", "password", "student", "0", "CSE232-MTH235")
-    add_user(conn, "bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
+    create_table()
+    add_user("keshav", "0", "MSU", "babukesh@msu.edu", "password", "student", "0", "CSE232-MTH235")
+    add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
+    print(pull_names())
     conn.close()
 
 
