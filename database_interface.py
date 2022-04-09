@@ -186,7 +186,7 @@ def createUser(form_data):
     school = form_data.getlist("school")[0]
     name = form_data.getlist("name")[0]
     role = form_data.getlist("role")[0]
-    classes = form_data.getlist("classes")[0].replace(" ","")
+    classes = form_data.getlist("classes")[0]
     email = form_data.getlist("email")[0]
     uuid = 0
     while(not isIDAvalible(str(uuid))):
@@ -202,7 +202,7 @@ def testDB():
 def main():
     conn = returnConn()
     #print(getTutors("CSE232"))
-    #create_table()
+    create_table()
     '''
     add_user("keshav", "0", "MSU", "keshavjbabu@gmail.com", "password", "student", "0", "CSE232-MTH235")
     add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
