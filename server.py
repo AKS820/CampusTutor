@@ -50,7 +50,7 @@ def home():
                 school = json.loads(user).get("school")
                 classes = json.loads(user).get("classes")
                 return render_template(
-                    "homeStudent.html",
+                    "home.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
@@ -61,7 +61,7 @@ def home():
                 school = json.loads(user).get("school")
                 classes = json.loads(user).get("classes")
                 return render_template(
-                    "homeTutor.html",
+                    "home.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
