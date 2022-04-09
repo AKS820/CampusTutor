@@ -18,7 +18,22 @@
   </select>
   <input type="submit" value="Get Tutor!">
 </form>
-
+</pre></div>
+<div><pre> Review a Tutor:
+<form action="/review" method="POST">
+  <label for="tutors">Choose a tutor: </label>
+  <select id="tutors" name="tutor">
+  	{% for tutor in tutors %}
+<option value={{tutor.get("name")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
+{% endfor %}
+  </select>
+	<input type="radio" name="rating" value="1">1
+	<input type="radio" name="rating" value="2">2
+	<input type="radio" name="rating" value="3">3
+	<input type="radio" name="rating" value="4">4
+	<input type="radio" name="rating" value="5">5
+  <input type="submit" value="Review!">
+</form>
 </pre></div>
   </body>
 </html>

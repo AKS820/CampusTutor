@@ -12,7 +12,7 @@
   <label for="tutors">Choose a tutor:</label>
   <select id="tutors" name="tutors">
   	{% for tutor in tutors %}
-<option value={{tutor.get("name")}}>{{tutor.get("name")}} with rep: {{tutor.get("rep")}}</option>
+<option value={{tutor.get("name")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
 {% endfor %}
   </select>
   <input type="submit" value="Request!">
