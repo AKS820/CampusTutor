@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search Bar</title>
+        <link rel="stylesheet" href="style.css">
+
+    	<script>var __adobewebfontsappname__="dreamweaver"</script>
+		
+    	<script src="http://use.edgefonts.net/playfair-display:n4:default;londrina-outline:n4:default;doppio-one:n4:default;aclonica:n4:default;open-sans:n4:default.js" type="text/javascript"></script>
+		
+		<script>
+			var colors = ["#FFCB05", "#18453B"];
+			var colorIndex = 0;
+			function changeColor() {
+				var col = document.getElementById("body");
+				if( colorIndex >= colors.length ) {
+					colorIndex = 0;
+				}
+				col.style.backgroundColor = colors[colorIndex];
+				colorIndex++;
+			}
+		</script>
+		
+    </head>
+	
+	
+	
+   	<body>
+		
+		
+        <header><button class="log_out">Log out</button></header>
+		
+		<table class="display_info">
+			<tr>
+				<td><button class="change_school" onclick="changeColor();">Change school</button></td>
+				<td><img src="../../../../../Downloads/Michigan_State_University_logo.png" width="42" height="48" alt="" align="center"/></td>
+			</tr>
+			<tr>
+				<td>Role:</td>
+				<td>ROLE</td>
+			</tr>
+		</table>
+		
+		
+		<div class="center_box">
+			<div class="welcome_message"><header><h1>Welcome, NAME</h1></header></div>
+  			<div class="search_bar"><form>  
+    			<label class="select_class_label"> Select class: </label>  
+    			<select class="dropdown_menu">
+					<optgroup label="EECS">
+    					<option value = "Class 1"> EECS 203  </option>  
+    					<option value = "Class 2"> EECS 280  </option>  
+    					<option value = "Class 3"> EECS 281  </option> 
+					</optgroup>
+					<optgroup label="ECON">
+    					<option value = "Class 1"> ECON 101 </option>  
+    					<option value = "Class 2"> ECON 102  </option>  
+    					<option value = "Class 3"> ECON 401  </option> 
+					</optgroup>
+				</select>
+			  <button class="search_button">Search</button>
+            </form></div>
+		</div>
+	
+	
+	</body>
+</html>
+
