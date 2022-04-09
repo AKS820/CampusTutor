@@ -130,7 +130,7 @@ def create_table():
 def pull_names():
     conn = returnConn()
     with conn.cursor() as cur:
-        cur.execute("SELECT id, * FROM users")
+        cur.execute("SELECT * FROM users")
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
         rows = cur.fetchall()
         #print(rows)
