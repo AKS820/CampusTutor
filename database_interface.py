@@ -3,6 +3,8 @@
 Test psycopg with CockroachDB.
 """
 
+# curl --create-dirs -o $HOME/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/994be2c3-81d2-4c2d-bc37-05fd579317e7/cert
+
 import time
 import random
 import logging
