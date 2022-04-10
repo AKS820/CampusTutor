@@ -113,7 +113,7 @@ def test_retry_loop(conn):
 '''
 
 def add_user(name, uuid, school, email, password, role, classes):
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         command = "UPSERT INTO users (id, name, school, email, password, role, classes, scores, exp) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + password + "', '" + role + "', '" + classes + "', '"+ str(0) + "', '"+ str(0) +"')"
         cur.execute(command)
@@ -121,14 +121,14 @@ def add_user(name, uuid, school, email, password, role, classes):
     conn.close()
 
 def create_table():
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cur.execute("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name TEXT, school TEXT, email TEXT, password TEXT, role TEXT, classes TEXT, scores TEXT, exp INT)")
     conn.commit()
     conn.close()
 
 def pull_names():
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cur.execute("SELECT * FROM users")
         logging.debug("print_balances(): status message: %s", cur.statusmessage)
@@ -143,13 +143,9 @@ def pull_names():
         conn.close()
         return items
 
-def returnConn():
-    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
-    return conn
-
 
 def updateConnTutors(name, uuid, school, email, rep, classes, score = 0, stars = 0.0):
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         command = "UPSERT INTO tutors (id, name, school, email, password, rep, classes, points, stars) VALUES ('" + uuid + "', '" + name + "', '" + school + "', '" + email + "', '" + rep + "', '" + classes + "', " + score + ", " + stars + "')"
         cur.execute(command)
@@ -157,7 +153,7 @@ def updateConnTutors(name, uuid, school, email, rep, classes, score = 0, stars =
     conn.close()
 
 def isIDAvalible(idm):
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cmd = "SELECT * FROM users WHERE id = "+str(idm)
         cur.execute(cmd)
@@ -168,7 +164,7 @@ def isIDAvalible(idm):
 
 def getTutorsWithForm(form_data):
     classs = form_data.getlist("class")[0]
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cmd = "SELECT * FROM users WHERE role = 'Tutor' AND classes LIKE '%" + classs + "%'"
         cur.execute(cmd)
@@ -185,7 +181,7 @@ def createReview(form_data):
     name = form_data.getlist("tutor")[0]
     scores = getScores(name)+"-"+str(rating)
     exp = int(getExp(name)) + 5
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         command = "UPDATE users set scores='"+scores+"', exp='"+str(exp)+"' WHERE name='"+name+"';"
         cur.execute(command)
@@ -193,7 +189,7 @@ def createReview(form_data):
     conn.close()
 
 def getExp(name):
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cmd = "SELECT exp FROM users WHERE name = '"+name+"'"
         cur.execute(cmd)
@@ -208,7 +204,7 @@ def getExp(name):
         return json.loads(items[0]).get("scores")[0][0]
 
 def getScores(name):
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cmd = "SELECT scores FROM users WHERE name = '"+name+"'"
         cur.execute(cmd)
@@ -221,9 +217,24 @@ def getScores(name):
         }
         items.append(json.dumps(value))
         return json.loads(items[0]).get("scores")[0][0]
+        
+def getPhone(name):
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
+    with conn.cursor() as cur:
+        cmd = "SELECT password FROM users WHERE name = '"+name+"'"
+        cur.execute(cmd)
+        scores = cur.fetchall()
+        conn.commit()
+        conn.close()
+        items = []
+        value = {
+            "scores": scores
+        }
+        items.append(json.dumps(value))
+        return json.loads(items[0]).get("scores")[0][0]
 
 def getTutors():
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
         cmd = "SELECT * FROM users WHERE role = 'Tutor'"
         cur.execute(cmd)
@@ -241,19 +252,20 @@ def createUser(form_data):
     role = form_data.getlist("role")[0]
     classes = form_data.getlist("classes")[0]
     email = form_data.getlist("email")[0]
+    phone = form_data.getlist("phone")[0]
     uuid = 0
     while(not isIDAvalible(str(uuid))):
         uuid += 1
     uuid = str(uuid)
-    add_user(name, uuid, school, email, "password", role, classes)
+    add_user(name, uuid, school, email, phone, role, classes)
     
 def testDB():
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     print(pull_names())
     conn.close()
 
 def main():
-    conn = returnConn()
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     #print(getTutors("CSE232"))
     create_table()
     '''

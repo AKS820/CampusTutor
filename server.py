@@ -6,7 +6,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, request
 
-from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview
+from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview, getPhone
 from flask import jsonify
 
 from twilio.rest import Client
@@ -54,7 +54,7 @@ def home():
                 school = json.loads(user).get("school")
                 classes = json.loads(user).get("classes")
                 return render_template(
-                    "homeStudent.html",
+                    "home.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
@@ -119,6 +119,16 @@ def newperson(pull_names_list = pull_names()):
 
         json_items.append(json.dumps(value))
     return json_items
+
+@app.route("/request", methods = ['POST', 'GET'])
+def dataRequest():
+    if request.method == 'GET':
+        return f"The URL /data is accessed directly. Try going to '/form' to submit form"
+    if request.method == 'POST':
+        form_data = request.form
+        name = form_data.getlist("tutors")[0]
+        print(getPhone(name))
+        return redirect("/")
 
 @app.route("/createUser", methods = ['POST', 'GET'])
 def data():
