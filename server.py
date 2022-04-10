@@ -6,7 +6,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, request
 
-from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview, getPhone
+from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview, getPhone, getName
 from flask import jsonify
 
 from twilio.rest import Client
@@ -131,8 +131,12 @@ def dataRequest():
     if request.method == 'POST':
         form_data = request.form
         email = form_data.getlist("tutors")[0]
-        print(email)
-        #print(getPhone(name))
+        phone = getPhone(email)
+        name = getName(email)
+        call = client.messages.create(
+            body="{} has expressed interest in you. Contact them at {} or {}".format(name,phone,email),
+            to = "{}".format(phone),
+            from_ = "+12182198066")
         return redirect("/")
 
 @app.route("/createUser", methods = ['POST', 'GET'])
@@ -196,36 +200,36 @@ def logout():
         )
     )
 
-@app.route("/sms")
-def sms():
-    name = session.get("user").get("userinfo").get("name")
-    phoneNumber = session.get("user").get("userinfo").get("number")
+# @app.route("/sms")
+# def sms():
+#     name = session.get("user").get("userinfo").get("name")
+#     phoneNumber = session.get("user").get("userinfo").get("number")
 
-    call = client.messages.create(
-        body="{} has expressed interest in you. Would you like to visit their profile? (YES/NO)".format(name),
-        #to = "{}".format(phoneNumber),
-        to = "+12485335849",
-        from_ = "+12182198066")
-    msg = incoming_sms()
+#     call = client.messages.create(
+#         body="{} has expressed interest in you. Would you like to visit their profile? (YES/NO)".format(name),
+#         #to = "{}".format(phoneNumber),
+#         to = "+12485335849",
+#         from_ = "+12182198066")
+#     msg = incoming_sms()
 
-def incoming_sms():
-    body = request.values.get('Body',None)
-    resp = MessagingResponse()
+# def incoming_sms():
+#     body = request.values.get('Body',None)
+#     resp = MessagingResponse()
 
-    name = session.get("user").get("userinfo").get("name")
-    school = session.get("user").get("userinfo").get("school")
-    classes = session.get("user").get("userinfo").get("classes")
-    #rep = session.get("user").get("userinfo").get("rep")
+#     name = session.get("user").get("userinfo").get("name")
+#     school = session.get("user").get("userinfo").get("school")
+#     classes = session.get("user").get("userinfo").get("classes")
+#     #rep = session.get("user").get("userinfo").get("rep")
 
-    if body.lower() == 'yes':
-        resp.message("{} is a student at {} and is in these classes: {}. This is their description: {}. Check them out on our website for more information".format(name,school,*classes, rep))
-    elif body.lower() == 'no':
-        resp.message("Request Ignored")
-    return str(resp)
+#     if body.lower() == 'yes':
+#         resp.message("{} is a student at {} and is in these classes: {}. This is their description: {}. Check them out on our website for more information".format(name,school,*classes, rep))
+#     elif body.lower() == 'no':
+#         resp.message("Request Ignored")
+#     return str(resp)
 
-@app.route("/sms")
-def review():
-    return render_template("review.html")
+# @app.route("/sms")
+# def review():
+#     return render_template("review.html")
 
 
 

@@ -233,6 +233,21 @@ def getPhone(name):
         items.append(json.dumps(value))
         return json.loads(items[0]).get("scores")[0][0]
 
+def getName(name):
+    conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
+    with conn.cursor() as cur:
+        cmd = "SELECT name FROM users WHERE email = '"+name+"'"
+        cur.execute(cmd)
+        scores = cur.fetchall()
+        conn.commit()
+        conn.close()
+        items = []
+        value = {
+            "scores": scores
+        }
+        items.append(json.dumps(value))
+        return json.loads(items[0]).get("scores")[0][0]
+
 def getTutors():
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
