@@ -273,7 +273,7 @@ def main():
     add_user("bob", "1", "MSU", "bob@msu.edu", "password", "student", "0", "WRA101")
     print(pull_names())
     '''
-    #print(pull_names())
+    print(pull_names())
     conn.close()
 
 
