@@ -42,7 +42,7 @@ client = Client(account_sid, auth_token)
 def home():
     create_table()
     if(session):
-        print(session)
+        #print(session)
         email = session.get("user").get("userinfo").get("email")
         user = getUserData(newperson(), email)
         if(user):
@@ -74,13 +74,14 @@ def home():
                     totalScore += int(score)
                 rating = totalScore/exp
                 return render_template(
-                    "homeTutor.html",
+                    "TutorHome.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
                     scores = scores,
                     exp = exp,
                     rating = rating,
+                    name = name,
                     pretty=json.dumps(session.get("user"), indent=4),
                 )
         else:
@@ -130,7 +131,7 @@ def dataRequest():
     if request.method == 'POST':
         form_data = request.form
         name = form_data.getlist("tutors")[0]
-        print(getPhone(name))
+        #print(getPhone(name))
         return redirect("/")
 
 @app.route("/createUser", methods = ['POST', 'GET'])
@@ -148,6 +149,7 @@ def reviewTutor():
         return f"The URL /data is accessed directly. Try going to '/form' to submit form"
     if request.method == 'POST':
         form_data = request.form
+        print(form_data)
         createReview(form_data)
         return redirect("/")
         

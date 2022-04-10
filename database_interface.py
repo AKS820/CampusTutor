@@ -183,7 +183,7 @@ def createReview(form_data):
     exp = int(getExp(name)) + 5
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
-        command = "UPDATE users set scores='"+scores+"', exp='"+str(exp)+"' WHERE name='"+name+"';"
+        command = "UPDATE users set scores='"+scores+"', exp='"+str(exp)+"' WHERE email='"+name+"';"
         cur.execute(command)
     conn.commit()
     conn.close()
@@ -191,7 +191,7 @@ def createReview(form_data):
 def getExp(name):
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
-        cmd = "SELECT exp FROM users WHERE name = '"+name+"'"
+        cmd = "SELECT exp FROM users WHERE email = '"+name+"'"
         cur.execute(cmd)
         scores = cur.fetchall()
         conn.commit()
@@ -206,7 +206,7 @@ def getExp(name):
 def getScores(name):
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
-        cmd = "SELECT scores FROM users WHERE name = '"+name+"'"
+        cmd = "SELECT scores FROM users WHERE email = '"+name+"'"
         cur.execute(cmd)
         scores = cur.fetchall()
         conn.commit()
@@ -221,7 +221,7 @@ def getScores(name):
 def getPhone(name):
     conn = psycopg2.connect("postgresql://keshavbabu:IsoON0LSvLsJTznlliHVZw@free-tier11.gcp-us-east1.cockroachlabs.cloud:26257/users?sslmode=verify-full&options=--cluster%3Dfading-serpent-461")
     with conn.cursor() as cur:
-        cmd = "SELECT password FROM users WHERE name = '"+name+"'"
+        cmd = "SELECT password FROM users WHERE email = '"+name+"'"
         cur.execute(cmd)
         scores = cur.fetchall()
         conn.commit()

@@ -68,7 +68,7 @@
          border-radius:25px;
          width:50%;
          font-family: "playfair-display";
-         height:60%;
+         height:70%;
          border:20px solid white;
          }
          .welcome_message {
@@ -169,6 +169,21 @@
                </select>
                <input class="btn btn-light" type="submit" value="Get Tutor!">
             </form>
+			 Review a Tutor:
+<form action="/review" method="POST">
+  <label for="tutors">Choose a tutor: </label>
+  <select id="tutors" name="tutor" class="form-select">
+  	{% for tutor in tutors %}
+<option value={{tutor.get("email")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
+{% endfor %}
+  </select>
+	<input class="form-check-input" type="radio" name="rating" value="1">1
+	<input class="form-check-input" type="radio" name="rating" value="2">2
+	<input class="form-check-input" type="radio" name="rating" value="3">3
+	<input class="form-check-input" type="radio" name="rating" value="4">4
+	<input class="form-check-input" type="radio" name="rating" value="5">5
+  <input class="form-select" type="submit" value="Review!">
+</form>
          </div>
       </div>
    </body>
