@@ -9,12 +9,17 @@ After cloning this repo, install the requirements
 pip install -r requirements.txt
 ```
 
+install the SLL cert
+```bash
+curl --create-dirs -o /root/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/994be2c3-81d2-4c2d-bc37-05fd579317e7/cert
+```
+
 ## Usage
 
 To start the server run
 
 ```bash
-python3 server.py
+sudo python3 server.py
 ```
 
 ## Known Issues
