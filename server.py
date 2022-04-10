@@ -72,7 +72,7 @@ def home():
                 totalScore = 0
                 for score in scores:
                     totalScore += int(score)
-                rating = totalScore/exp
+                rating = round(totalScore/exp, 2)
                 return render_template(
                     "TutorHome.html",
                     session=session.get("user"),

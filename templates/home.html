@@ -85,6 +85,7 @@
          width: 60%;
          top: 10%;
          font-size:30px;
+		 color:#FFFFFF;
          }
          .select_class_label {
          position:relative;
@@ -142,8 +143,8 @@
       <header><button class="log_out" onclick="location.href='/logout';" id="qsLogoutBtn">Log out</button></header>
       <table class="display_info">
          <tr>
-            <td><button class="change_school" onclick="changeColor();">Change school</button></td>
-            <td><img src="../../../../../Downloads/Michigan_State_University_logo.png" width="42" height="48" alt="" align="center"/></td>
+            <td>School: </td>
+            <td>{{school}}</td>
          </tr>
          <tr>
             <td>Role:</td>
