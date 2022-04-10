@@ -130,7 +130,8 @@ def dataRequest():
         return f"The URL /data is accessed directly. Try going to '/form' to submit form"
     if request.method == 'POST':
         form_data = request.form
-        name = form_data.getlist("tutors")[0]
+        email = form_data.getlist("tutors")[0]
+        print(email)
         #print(getPhone(name))
         return redirect("/")
 

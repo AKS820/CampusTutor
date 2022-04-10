@@ -150,7 +150,7 @@
            	<form action="/request" method="POST">
   <select id="tutors" name="tutors" class="form-select">
   	{% for tutor in tutors %}
-<option value={{tutor.get("name")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
+<option value={{tutor.get("email")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
 {% endfor %}
   </select>
    
