@@ -1,23 +1,31 @@
 <html>
   <head>
     <meta charset="utf-8" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>Auth0 Example</title>
   </head>
+    <style>
+  .center {
+text-align: center;
+}
+  </style>
   <body>
-    <h1>Tutors</h1>
-    <p><a href="/logout" id="qsLogoutBtn">Logout</a></p>
-	<p><a href="/" id="qsLogoutBtn">Home</a></p>
+  <div class="container center">
+    <h1 class="display-1">Tutors</h1>
+    <a href="/logout" id="qsLogoutBtn">Logout</a>
+	<a href="/" id="qsLogoutBtn">Home</a>
 	<div><pre>
 	<form action="/request" method="POST">
-  <label for="tutors">Choose a tutor:</label>
-  <select id="tutors" name="tutors">
+  <select id="tutors" name="tutors" class="form-select">
   	{% for tutor in tutors %}
 <option value={{tutor.get("name")}}>{{tutor.get("name")}} with exp: {{tutor.get("exp")}}</option>
 {% endfor %}
   </select>
-  <input type="submit" value="Request!">
+  <input class="btn btn-outline-primary" type="submit" value="Request!">
 </form>
 
 </pre></div>
+</div>
   </body>
 </html>

@@ -42,10 +42,12 @@ client = Client(account_sid, auth_token)
 def home():
     create_table()
     if(session):
+        print(session)
         email = session.get("user").get("userinfo").get("email")
         user = getUserData(newperson(), email)
         if(user):
             role = json.loads(user).get("role")
+            name = json.loads(user).get("name")
             if(role=="Student"):
                 tutors = newperson(getTutors())
                 newtutors = []
@@ -60,6 +62,7 @@ def home():
                     role = role,
                     classes = classes,
                     tutors = newtutors,
+                    name = name,
                     pretty=json.dumps(session.get("user"), indent=4),
                 )
             else:
