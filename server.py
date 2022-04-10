@@ -131,10 +131,12 @@ def dataRequest():
     if request.method == 'POST':
         form_data = request.form
         email = form_data.getlist("tutors")[0]
+        email_client= session.get("user").get("userinfo").get("email")
+        phone_client = getPhone(email_client)
         phone = getPhone(email)
-        name = getName(email)
+        name = getName(email_client)
         call = client.messages.create(
-            body="{} has expressed interest in you. Contact them at {} or {}".format(name,phone,email),
+            body="{} has expressed interest in you. Contact them at {} or {}".format(name,phone_client,email_client),
             to = "{}".format(phone),
             from_ = "+12182198066")
         return redirect("/")
