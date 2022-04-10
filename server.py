@@ -54,7 +54,7 @@ def home():
                 school = json.loads(user).get("school")
                 classes = json.loads(user).get("classes")
                 return render_template(
-                    "home.html",
+                    "homeStudent.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
@@ -71,7 +71,7 @@ def home():
                     totalScore += int(score)
                 rating = totalScore/exp
                 return render_template(
-                    "home.html",
+                    "homeTutor.html",
                     session=session.get("user"),
                     school = school,
                     role = role,
