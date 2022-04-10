@@ -1,37 +1,46 @@
 <html>
   <head>
     <meta charset="utf-8" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>Auth0 Example</title>
   </head>
   <body>
+  <style>
+  .center {
+text-align: center;
+}
+  </style>
   <script>
 	function addclass(){
 		var cc = document.getElementById("CC").value;
 		var cn = document.getElementById("CN").value;
-		console.log(cc);
-		console.log(cn)
-		if(document.getElementById("CR").value == ""){
-			document.getElementById("CR").value += cc+cn;
-		}else{
-			document.getElementById("CR").value += "-"+cc+cn;
+		if(cc!=""&&cn!=""&&cc!=""){
+			if(document.getElementById("CR").value == ""){
+				document.getElementById("CR").value += cc+cn;
+			}else{
+				document.getElementById("CR").value += "-"+cc+cn;
+			}
 		}
-		
 	}
   </script>
-    <h1 id="profileDropDown">Welcome New User</h1>
+  <div class="container center">
+    <h1 class="display-1" id="profileDropDown">Welcome New User</h1>
 	<form action="/createUser" method = "POST">
-	<p>Email: <input type = "text" name = "email" value="{{email}}" readonly></p>
-    <p>School: <input type = "text" name = "school" /></p>
-    <p>Name: <input type = "text" name = "name" /></p>
-	<p>Role: 
-		<select name="role">
+	<p><input class="form-control" aria-label="default input example" type = "text" name = "email" value="{{email}}" readonly></p>
+    <p><input class="form-control" aria-label="default input example" placeholder="School" type = "text" name = "school" /></p>
+    <p><input class="form-control" aria-label="default input example" placeholder="Name" type = "text" name = "name" /></p>
+	<p><input class="form-control" aria-label="default input example" placeholder="Phone Number" type = "text" name = "phone" /></p>
+	<p>
+		<select name="role" class="form-select">
 			<option value="Student">Student</option>
 			<option value="Tutor">Tutor</option>
 		</select>
 	</p>
-	<p>Classes: <input type = "text" name = "classes" id="CR"readonly></p>
-	<p>Classes Code:
-		<select name="classCode" id="CC">
+	<p><input class="form-control" aria-label="default input example" type = "text" name = "classes" id="CR"readonly></p>
+	<p>Class Picker:</p>
+	<p>
+		<select name="classCode" id="CC" class="form-select">
 		<option value="-1">(select)</option>
 		<option value="AAAS">AAAS&#160;&#160;&#160;&#160;African American and African Studies</option>
 		<option value="AAE">AAE&#160;&#160;&#160;&#160;&#160;&#160;Advanced Academic English</option>
@@ -228,9 +237,10 @@
 		<option value="XA">XA&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Experience Architecture</option>
 	</select>
 	</p>
-	<p>Course Number: <input type = "text" name = "classNum" id="CN"/></p>
-	<button type="button" onclick="addclass();">add class</button>
-    <p><input type = "submit" value = "submit" /></p>
+	<p><input class="form-control" aria-label="default input example" placeholder="Course Number" type = "text" name = "classNum" id="CN"/></p>
+	<button class="btn btn-outline-secondary" type='button' onclick='addclass()'>add class</button>
+    <p><input class="btn btn-outline-primary" type = "submit" value = "submit" /></p>
 </form>
+</div>
   </body>
 </html>

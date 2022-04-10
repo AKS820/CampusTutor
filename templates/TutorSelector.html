@@ -8,7 +8,7 @@
     <p><a href="/logout" id="qsLogoutBtn">Logout</a></p>
 	<p><a href="/" id="qsLogoutBtn">Home</a></p>
 	<div><pre>
-	<form action="/request">
+	<form action="/request" method="POST">
   <label for="tutors">Choose a tutor:</label>
   <select id="tutors" name="tutors">
   	{% for tutor in tutors %}
