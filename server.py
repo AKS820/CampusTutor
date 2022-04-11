@@ -6,7 +6,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, redirect, render_template, session, url_for, request
 
-from database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview, getPhone, getName
+from database.database_interface import pull_names, createUser, create_table, getTutorsWithForm, getTutors, createReview, getPhone, getName
 from flask import jsonify
 
 from twilio.rest import Client
@@ -72,7 +72,7 @@ def home():
                 totalScore = 0
                 for score in scores:
                     totalScore += int(score)
-                rating = round(totalScore/exp, 2)
+                rating = round(totalScore/exp, 2)*5
                 return render_template(
                     "TutorHome.html",
                     session=session.get("user"),
